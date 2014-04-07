@@ -148,15 +148,15 @@ class Main:
             choice = int(choice)
         except ValueError:
             choice = 0
-        if (choice == 1):
+        if choice == 1:
             self.start_new_game()
-        elif (choice == 2):
+        elif choice == 2:
             pass
-        elif (choice == 3):
+        elif choice == 3:
             pass
-        elif (choice == 4):
+        elif choice == 4:
             self.create_setup()
-        elif (choice == 5):
+        elif choice == 5:
             sys.exit(0)
 
         else:
@@ -185,27 +185,28 @@ class Main:
             return True
 
     def player_move(self, choice):
+        choice = choice.upper()
         current_x = self.character_position[0]
         current_y = self.character_position[1]
-        if choice == 'W' or choice == 'w':
+        if choice == 'W':
             if not self.check_boundary(current_x, current_y - 1):
                 return False
             else:
                 self.character_position = [current_x, current_y - 1]
                 return True
-        elif choice == 'A' or choice == 'a':
+        elif choice == 'A':
             if not self.check_boundary(current_x - 1, current_y):
                 return False
             else:
                 self.character_position = [current_x - 1, current_y]
                 return True
-        elif choice == 'S' or choice == 's':
+        elif choice == 'S':
             if not self.check_boundary(current_x, current_y + 1):
                 return False
             else:
                 self.character_position = [current_x, current_y + 1]
                 return True
-        elif choice == 'D' or choice == 'd':
+        elif choice == 'D':
             if not self.check_boundary(current_x + 1, current_y):
                 return False
             else:
@@ -232,16 +233,15 @@ class Main:
                     self.monster_position = [mon_x, mon_y - 1]
                 else:
                     self.monster_position = [mon_x, mon_y + 1]
-            moves_left = moves_left - 1
-
+            moves_left -= 1
 
     def draw_grid(self):
-        if self.character_won == True:
+        if self.character_won:
             print('You have beaten Monster! Congratulations!')
             choice = input('Press any key to return to the menu or press enter to exit:')
             if choice:
                 self.display_menu()
-        elif self.character_alive == False:
+        elif not self.character_alive:
             print('You have been eaten by the Monster!')
             choice = input('Press any key to return to the menu or press enter to exit:')
             if choice:
@@ -258,18 +258,17 @@ class Main:
                     char_x = str(self.character_position[0])
                     char_y = str(self.character_position[1])
                     if (str(self.monster_position[0]) == x and str(
-                            self.monster_position[1]) == y and self.monster_awake == True):
-                        sys.stdout.write('M')
-                    elif (char_x == x and char_y == y):
-                        sys.stdout.write('X')
+                            self.monster_position[1]) == y and self.monster_awake):
+                        print('M', end='')
+                    elif char_x == x and char_y == y:
+                        print('X', end='')
                     else:
-                        # sys.stdout.write('?')
                         print('?', end='')
                 print()
             print()
             print('Move using WASD')
             choice = input('Move: ')
-            if self.player_move(choice) == False:
+            if not self.player_move(choice):
                 print('Not a valid move')
                 self.draw_grid()
             else:
