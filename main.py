@@ -117,6 +117,32 @@ class Main:
         self.place_trap()
         self.draw_grid()
 
+    def create_setup(self):
+        self.reset_all_settings()
+        print('This option lets you set the settings for Monster!')
+        width_choice = input('How wide do you want the game board to be? (Default: 5): ')
+        try:
+            width_choice = int(width_choice)
+        except ValueError:
+            width_choice = 5
+        self.max_width = width_choice
+
+        height_choice = input('How high do you want the game board to be? (Default: 5): ')
+        try:
+            height_choice = int(height_choice)
+        except ValueError:
+            height_choice = 5
+        self.max_height = height_choice
+
+        monster_move_count_choice = input(
+            'How many moves should the monster get, for each of your moves (Default: 2): ')
+        try:
+            monster_move_count_choice = int(monster_move_count_choice)
+        except ValueError:
+            monster_move_count_choice = 2
+        self.monster_moves_per_turn = monster_move_count_choice
+        self.setup_game()
+
     def menu_choice(self, choice):
         try:
             choice = int(choice)
@@ -129,7 +155,7 @@ class Main:
         elif (choice == 3):
             pass
         elif (choice == 4):
-            pass
+            self.create_setup()
         elif (choice == 5):
             sys.exit(0)
 
@@ -236,10 +262,6 @@ class Main:
                         sys.stdout.write('M')
                     elif (char_x == x and char_y == y):
                         sys.stdout.write('X')
-                    elif (str(self.trap_position[0]) == x and str(self.trap_position[1]) == y):
-                        sys.stdout.write('T')
-                    elif (str(self.flask_position[0]) == x and str(self.flask_position[1]) == y):
-                        sys.stdout.write('F')
                     else:
                         # sys.stdout.write('?')
                         print('?', end='')
