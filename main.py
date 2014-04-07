@@ -188,6 +188,27 @@ class Main:
         else:
             return False
 
+    def move_monster(self):
+        moves_left = self.monster_moves_per_turn
+        while moves_left > 0:
+            mon_x = self.monster_position[0]
+            mon_y = self.monster_position[1]
+            player_x = self.character_position[0]
+            player_y = self.character_position[1]
+
+            if player_x - mon_x != 0:
+                if player_x - mon_x < 0:
+                    self.monster_position = [mon_x - 1, mon_y]
+                else:
+                    self.monster_position = [mon_x + 1, mon_y]
+            else:
+                if player_y - mon_y < 0:
+                    self.monster_position = [mon_x, mon_y - 1]
+                else:
+                    self.monster_position = [mon_x, mon_y + 1]
+            moves_left = moves_left - 1
+
+
     def draw_grid(self):
         if self.character_won == True:
             print('You have beaten Monster! Congratulations!')
