@@ -150,6 +150,44 @@ class Main:
             return True
         return False
 
+    def check_boundary(self, new_x, new_y):
+        min_width = 0
+        min_height = 0
+        if new_x < min_width or new_x == self.max_width or new_y < min_height or new_y == self.max_height:
+            return False
+        else:
+            return True
+
+    def player_move(self, choice):
+        current_x = self.character_position[0]
+        current_y = self.character_position[1]
+        if choice == 'W' or choice == 'w':
+            if not self.check_boundary(current_x, current_y - 1):
+                return False
+            else:
+                self.character_position = [current_x, current_y - 1]
+                return True
+        elif choice == 'A' or choice == 'a':
+            if not self.check_boundary(current_x - 1, current_y):
+                return False
+            else:
+                self.character_position = [current_x - 1, current_y]
+                return True
+        elif choice == 'S' or choice == 's':
+            if not self.check_boundary(current_x, current_y + 1):
+                return False
+            else:
+                self.character_position = [current_x, current_y + 1]
+                return True
+        elif choice == 'D' or choice == 'd':
+            if not self.check_boundary(current_x + 1, current_y):
+                return False
+            else:
+                self.character_position = [current_x + 1, current_y]
+                return True
+        else:
+            return False
+
 
     def draw_grid(self):
         height = self.max_height
