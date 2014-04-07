@@ -7,19 +7,24 @@ class Main:
     max_height = 5
     character_alive = True
     character_won = False
-    monster_awake = True  # TODO should be false
+    monster_awake = False
     monster_awakened = False
     monster_moves_per_turn = 2
 
     def __init__(self):
-        # self.display_menu()
+        self.display_menu()
         self.reset_current_game()
-
 
     def reset_current_game(self):
         self.monster_position = [1, 1]
         self.trap_position = [0, 1]
         self.flask_position = [1, 0]
+
+    def reset_all_settings(self):
+        self.character_alive = True
+        self.character_won = False
+        self.monster_awake = False
+        self.monster_awakened = False
 
     def place_character(self):
         self.character_position = [0, 0]
@@ -62,6 +67,7 @@ class Main:
 
     def display_menu(self):
         menu_list = ['Start New Game', '[Save Game]', '[Load Game]', 'Customize Setup', 'Exit']
+        print('Type the number of your choice')
         print()
         for i in range(1, len(menu_list) + 1):
             print(str(i) + ' ' + menu_list[i - 1])
@@ -99,13 +105,25 @@ class Main:
         else:
             return False
 
+    def start_new_game(self):
+        self.reset_all_settings()
+        self.reset_current_game()
+        self.setup_game()
+
+    def setup_game(self):
+        self.place_character()
+        self.place_flask()
+        self.place_monster()
+        self.place_trap()
+        self.draw_grid()
+
     def menu_choice(self, choice):
         try:
             choice = int(choice)
         except ValueError:
             choice = 0
         if (choice == 1):
-            pass
+            self.start_new_game()
         elif (choice == 2):
             pass
         elif (choice == 3):
@@ -118,6 +136,20 @@ class Main:
         else:
             print('That wasn\'t a valid option. Try again.')
             self.display_menu()
+
+    def collision_check(self):
+        if self.coordinate_collision('player', 'monster'):
+            self.character_alive = False
+            return True
+        elif self.coordinate_collision('player', 'flask'):
+            self.character_won = True
+            return True
+        elif self.coordinate_collision('player', 'trap'):
+            self.monster_awakened = True
+            self.trap_position = [-1, -1]
+            return True
+        return False
+
 
     def draw_grid(self):
         height = self.max_height
@@ -146,8 +178,3 @@ class Main:
 
 
 monster = Main()
-monster.place_character()
-monster.place_flask()
-monster.place_monster()
-monster.place_trap()
-monster.draw_grid()
